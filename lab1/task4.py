@@ -100,12 +100,12 @@ def main():
     crit_matrix = interactive_matrix_input(k, default_crit_matrix, "Сравнение критериев")
     crit_weights, _, crit_cr = calculate_weights_and_consistency(crit_matrix)
 
-    print(f"\n📊 ВЕСА КРИТЕРИЕВ (Индекс согласованности CR = {crit_cr:.2%}):")
+    print(f"\nВЕСА КРИТЕРИЕВ (Индекс согласованности CR = {crit_cr:.2%}):")
     for c, w in zip(criteria, crit_weights):
         print(f"  • {c}: {w:.4f}")
 
     if crit_cr > 0.10:
-        print("⚠️ ВНИМАНИЕ: Матрица критериев несогласована (CR > 10%)! Суждения требуют пересмотра.")
+        print("ВНИМАНИЕ: Матрица критериев несогласована (CR > 10%)! Суждения требуют пересмотра.")
 
     # Шаг 2: Сравниваем альтернативы по каждому критерию
     # Матрица для хранения локальных весов: строки - альтернативы, столбцы - критерии
@@ -131,7 +131,7 @@ def main():
     best_index = np.argmax(global_priorities)
 
     for i, alt in enumerate(alternatives):
-        marker = "🏆 [РЕКОМЕНДУЕТСЯ]" if i == best_index else "  "
+        marker = "[РЕКОМЕНДУЕТСЯ]" if i == best_index else "  "
         print(f"{marker} {alt}: Итоговый глобальный вес = {global_priorities[i]:.4f}")
     print("=" * 60)
 

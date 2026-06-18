@@ -46,25 +46,28 @@ def calculate_decision_tree():
     print("\n" + "=" * 80)
     print("ПОЛНОЕ ДЕРЕВО РЕШЕНИЙ И ВЫЧИСЛЕНИЕ МЕТРИК:")
     print("=" * 80)
-    print("📝 [Корень: Выбор стратегии развития проекта]")
+    print("[Корень: Выбор стратегии развития проекта]")
 
     for strat_name, strat_info in tree_data.items():
         cost = strat_info["cost"]
-        print(f" └── 🚪 {strat_name} (Затраты на реализацию: {cost})")
+        print(f" └── {strat_name} (Затраты на реализацию: {cost})")
 
         # Шаг 1: Собираем плоский список финальных исходов для расчёта матожидания и риска
         flat_outcomes = []
 
         for env_name, env_info in strat_info["env_states"].items():
             p_env = env_info["prob"]
-            print(f"     ├── 🌍 Состояние: {env_name}")
+            print(f"     ├── Состояние: {env_name}")
 
             for outcome_name, (p_out, payoff) in env_info["payoffs"].items():
                 total_prob = p_env * p_out
                 final_profit = payoff - cost
                 if total_prob > 0:
                     print(
-                        f"     │   ├── 🎲 {outcome_name:18s} | Итоговая вероятность: {total_prob:.3f} | Чистая прибыль: {final_profit}")
+                        f"     │   ├── {outcome_name:18s} | "
+                        f"Итоговая вероятность: {total_prob:.3f} | "
+                        f"Чистая прибыль: {final_profit}"
+                    )
                     flat_outcomes.append({"prob": total_prob, "profit": final_profit})
 
         # Шаг 2: Расчёт EMV (Математическое ожидание чистой прибыли)
@@ -75,7 +78,7 @@ def calculate_decision_tree():
         std_dev = np.sqrt(variance)
 
         results[strat_name] = {"emv": emv, "risk": std_dev}
-        print(f"     📊 ИТОГ ДЛЯ ВЕТКИ -> Ожидаемая стоимость (EMV): {emv:.2f} | Уровень риска (Sigma): {std_dev:.2f}\n")
+        print(f"     ИТОГ ДЛЯ ВЕТКИ -> Ожидаемая стоимость (EMV): {emv:.2f} | Уровень риска (Sigma): {std_dev:.2f}\n")
 
     print("=" * 80)
     print("СРАВНИТЕЛЬНЫЙ АНАЛИЗ СТРАТЕГИЙ:")
@@ -89,7 +92,7 @@ def calculate_decision_tree():
     best_emv_strat = max(results, key=lambda k: results[k]["emv"])
     min_risk_strat = min(results, key=lambda k: results[k]["risk"])
 
-    print("\n💡 ЗАКЛЮЧЕНИЕ ДЛЯ ПРИНЯТИЯ РЕШЕНИЙ:")
+    print("\nЗАКЛЮЧЕНИЕ ДЛЯ ПРИНЯТИЯ РЕШЕНИЙ:")
     print(f" 1. По критерию максимальной средней прибыли (EMV) лучшим является: '{best_emv_strat}'")
     print(f" 2. По критерию минимального риска (наименьшая неопределенность) лучшим является: '{min_risk_strat}'")
     print("=" * 80)
